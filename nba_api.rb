@@ -55,4 +55,4 @@ stats_api = Unirest.get "https://free-nba.p.rapidapi.com/stats",
 stats = {}
 stats = stats_api.body
 stats = stats["data"]
-p stats
+stats
