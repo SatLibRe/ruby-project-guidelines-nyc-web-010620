@@ -46,3 +46,26 @@ def game_popluator(games)
 end
 
 game_popluator(games)
+
+###################################################################################
+# Players API
+
+players_api = Unirest.get "https://free-nba.p.rapidapi.com/players",
+  headers:{
+    "X-RapidAPI-Host" => "free-nba.p.rapidapi.com",
+    "X-RapidAPI-Key" => "da38e79dd4msh1ce84dac4969474p12469djsnd69e872f4266"
+  }
+
+players = {}
+players = players_api.body
+players = players["data"]
+
+def player_popluator(players) 
+  players.each do |player|
+      Player.create(:first_name => player["first_name"],
+      :height_feet => player["height_feet"], :height_inches => player["height_inches"], :last_name => player["last_name"], :position => player["position"],
+      :team_id => player["team"]["id"], :weight_pounds => player["weight_pounds"]) 
+  end  
+end
+
+player_popluator(players)
