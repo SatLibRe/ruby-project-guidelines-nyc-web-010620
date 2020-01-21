@@ -1,4 +1,4 @@
-class User < ApplicationRecord
+class User < ActiveRecord::Base
     attr_accessor :password
     validates :username, presence: true, uniqueness: true
     validates :password, presence: true, on: :create
