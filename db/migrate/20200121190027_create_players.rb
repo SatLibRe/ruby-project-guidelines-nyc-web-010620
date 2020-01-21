@@ -7,6 +7,7 @@ class CreatePlayers < ActiveRecord::Migration[5.0]
       t.string :last_name 
       t.string :position
       t.integer :team_id
+      t.integer :weight_pounds
     end 
   end
 end
