@@ -60,7 +60,8 @@ class CommandLineInterface
                 puts "\nPlease enter a Team city"
                 input = gets.strip.to_s
                 team = Team.find_by(city: input.downcase.capitalize)
-                puts "Abbreviation: #{team.abbreviation}" 
+                puts "Abbreviation: #{team.abbreviation}"
+                
             when "Exit"
                 break
             end 

@@ -46,7 +46,7 @@ games = games["data"]
 
 def game_popluator(games) 
   games.each do |game|
-      Game.create(:date => game["date"],
+      Game.create(:date => Time.at(rand * Time.now.to_i).to_s.split(" ")[0],
       :home_team_id => game["home_team"]["id"], :visitor_team_id => game["visitor_team"]["id"], :home_team_score => game["home_team_score"], :visitor_team_score => game["visitor_team_score"],
       :period => game["period"], :postseason => game["postseason"], :season => game["season"], :status => game["status"], :time => game["time"]) 
   end  
