@@ -1,6 +1,10 @@
 require 'unirest'
 require "pry"
 
+Player.destroy_all
+Team.destroy_all
+Game.destroy_all
+
 
 # Teams API
 
@@ -64,8 +68,8 @@ players = players["data"]
 def player_popluator(players) 
   players.each do |player|
       Player.create(:first_name => player["first_name"],
-      :height_feet => player["height_feet"], :height_inches => player["height_inches"], :last_name => player["last_name"], :position => player["position"],
-      :team_id => player["team"]["id"], :weight_pounds => player["weight_pounds"], :PPG => rand(5..65).to_f) 
+      :height_feet => rand(3..12), :height_inches => rand(1..11), :last_name => player["last_name"], :position => player["position"],
+      :team_id => player["team"]["id"], :weight_pounds => rand(110..320), :PPG => rand(5..65).to_f) 
   end  
 end
 

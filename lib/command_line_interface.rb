@@ -24,6 +24,8 @@ class CommandLineInterface
           puts "Please enter a command:"
           input = gets.strip.to_s
             case input 
+            when "1"
+                # play(songs)
               when "2"
                 puts "Please enter a player's first name"
                 input = gets.strip.to_s
@@ -31,10 +33,9 @@ class CommandLineInterface
                 puts "First Name: #{player[:first_name]}"
                 puts "Last Name: #{player[:last_name]}"
                 puts "Position: #{player[:position]}"
-                puts "Height: #{rand}" 
-                # puts player[:height_inches]
-              when "2"
-                # play(songs)
+                puts "PPG: #{player[:PPG]}"  
+                puts "Height: #{player[:height_feet]}'#{player[:height_inches]}" 
+                puts "Weight: #{player[:weight_pounds]}"
               when "3"
                 # exit_jukebox 
                 break
