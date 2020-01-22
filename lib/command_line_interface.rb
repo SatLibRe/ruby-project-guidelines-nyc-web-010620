@@ -61,9 +61,10 @@ class CommandLineInterface
                 input = gets.strip.to_s
                 if valid_response_player?(input) == true
                     player = Player.find_by(first_name: input.downcase.capitalize)
-                    puts "First Name: #{player[:first_name]}"
+                    puts "\nFirst Name: #{player[:first_name]}"
                     puts "Last Name: #{player[:last_name]}"
                     puts "Position: #{player[:position]}"
+                    puts "Team: #{Team.find_by(team_id: player[:team_id]).name}"
                     puts "PPG: #{player[:PPG]}"  
                     puts "Height: #{player[:height_feet]}'#{player[:height_inches]}" 
                     puts "Weight: #{player[:weight_pounds]}"
@@ -88,11 +89,11 @@ class CommandLineInterface
                     puts "\nPlease enter a valid city"
                 end 
             when "Search for a Game by Date"
-                puts "\nPlease enter a Game date"
+                puts "\nPlease enter a Game date(YYYY-MM-DD FORMAT)"
                 input = gets.strip.to_s
                 if valid_response_date?(input) == true
                     game = Game.find_by(date: input)
-                    puts "Date: #{game[:date]}"
+                    puts "\nDate: #{game[:date]}"
                     puts "Score: #{Team.find_by(team_id: game.home_team_id).name}: #{game.home_team_score} - #{Team.find_by(team_id: game.visitor_team_id).name}: #{game.visitor_team_score} "
                 else
                     puts "\nPlease enter a valid date"
