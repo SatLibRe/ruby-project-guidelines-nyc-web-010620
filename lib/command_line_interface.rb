@@ -54,7 +54,7 @@ class CommandLineInterface
 
     def run
     while true do 
-        input = ttyprompt("\nPlease choose an option",["Search for a Team by city", "Search for a Player", "List all players","Search for a Game by Date","Exit"])
+        input = ttyprompt("\nPlease choose an option",["Search for a Team by city", "Search for a Player", "List all players","Search for a Game by Date", "List Top 10 Players","Exit"])
         case input
             when "Search for a Player"
                 puts "\nPlease enter a player's first name"
@@ -97,6 +97,11 @@ class CommandLineInterface
                     puts "Score: #{Team.find_by(team_id: game.home_team_id).name}: #{game.home_team_score} - #{Team.find_by(team_id: game.visitor_team_id).name}: #{game.visitor_team_score} "
                 else
                     puts "\nPlease enter a valid date"
+                end 
+            when "List Top 10 Players"
+                player_arr = Player.order(PPG: :desc).to_a.slice(0,10)
+                player_arr.each do |player|
+                    puts "#{player.first_name} #{player.last_name}: #{player.PPG}"
                 end 
             when "Exit"
                 break
