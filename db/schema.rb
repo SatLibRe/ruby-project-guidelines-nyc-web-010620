@@ -46,4 +46,12 @@ ActiveRecord::Schema.define(version: 20200122210132) do
     t.integer "team_id"
   end
 
+  create_table "users", force: :cascade do |t|
+    t.string   "username",      null: false
+    t.string   "password_hash", null: false
+    t.string   "password_salt", null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
 end
