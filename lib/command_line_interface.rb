@@ -20,10 +20,8 @@ class CommandLineInterface
         
     end 
 
-    def ttyprompt(text,arr)
-        prompt = TTY::Prompt.new
-        prompt.select(text,arr)
-    end
+    
+$prompt = TTY::Prompt.new
 
     def valid_response_player?(input) 
         Player.all.each do |player|
@@ -52,9 +50,11 @@ class CommandLineInterface
         false 
     end
 
+  
+
     def run
     while true do 
-        input = ttyprompt("\nPlease choose an option",["Search for a Team by city", "Search for a Player", "List all players","Search for a Game by Date", "List Top 10 Players","Exit"])
+        input = $prompt.select("\nPlease choose an option",["Search for a Team by city", "Search for a Player", "List all players","Search for a Game by Date", "List Top 10 Players","Create Player","Exit"])
         case input
             when "Search for a Player"
                 puts "\nPlease enter a player's first name"
@@ -103,6 +103,17 @@ class CommandLineInterface
                 player_arr.each do |player|
                     puts "#{player.first_name} #{player.last_name}: #{player.PPG}"
                 end 
+            when "Create Player"
+                fname = $prompt.ask("Whats your first name?")
+                lname = $prompt.ask("Whats your last name?")
+                hfeet = $prompt.ask("Whats your height in feet?")
+                hinches = $prompt.ask("... and in inches?")
+                pos = $prompt.ask("What is your position?")
+                myteam = $prompt.ask("What team do you want to be on?")
+                myteamid = Team.find_by(name: myteam).team_id
+                fat = $prompt.ask("Whats is your weight?")
+                pavg = $prompt.ask("What you averaging?")
+                Player.create(:first_name => fname, :height_feet => hfeet, :height_inches => hinches, :last_name => lname, :position => pos, :team_id => myteamid, :weight_pounds => fat, :PPG => pavg) 
             when "Exit"
                 break
             end 
