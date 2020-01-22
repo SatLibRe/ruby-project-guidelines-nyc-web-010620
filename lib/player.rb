@@ -8,6 +8,12 @@ class Player < ActiveRecord::Base
         end 
     end 
 
+    def team 
+        Team.all.select do |team|
+            team.team_id == self.team_id
+        end 
+    end 
+
     
 
 end 

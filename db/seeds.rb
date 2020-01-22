@@ -23,7 +23,7 @@ teams = teams["data"]
 
 def team_popluator(teams) 
     teams.each do |team|
-        Team.create(:abbreviation => team["abbreviation"],
+        Team.create(:abbreviation => team["abbreviation"], :team_id => team["id"],
         :city => team["city"], :conference => team["conference"], :division => team["division"], :full_name => team["full_name"], :name => team["name"]) 
     end  
 end

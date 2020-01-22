@@ -34,6 +34,15 @@ class CommandLineInterface
         false 
     end 
 
+    def valid_response_date?(input) 
+        Game.all.each do |game|
+            if game.date == input.to_s
+                return true  
+            end 
+        end 
+        false 
+    end 
+
     def valid_response_city?(input)
         Team.all.each do |team|
             if team.city.downcase == input.downcase
@@ -45,7 +54,7 @@ class CommandLineInterface
 
     def run
     while true do 
-        input = ttyprompt("\nPlease choose an option",["Search for a Team by city", "Search for a Player", "List all players","Exit"])
+        input = ttyprompt("\nPlease choose an option",["Search for a Team by city", "Search for a Player", "List all players","Search for a Game by Date","Exit"])
         case input
             when "Search for a Player"
                 puts "\nPlease enter a player's first name"
@@ -69,15 +78,25 @@ class CommandLineInterface
                 puts "\nPlease enter a Team city"
                 input = gets.strip.to_s
                 if valid_response_city?(input) == true
-                    team = Team.find_by(city: input.downcase.capitalize)
+                    team = Team.find_by(city: input)
                     puts "\nAbbreviation: #{team[:abbreviation]}"
                     puts "Conference: #{team[:conference]}"
                     puts "Division: #{team[:division]}" 
                     puts "Full Name: #{team[:full_name]}"
                     puts "Team Name: #{team[:name]}"
-                else
+                else 
                     puts "\nPlease enter a valid city"
-                end
+                end 
+            when "Search for a Game by Date"
+                puts "\nPlease enter a Game date"
+                input = gets.strip.to_s
+                if valid_response_date?(input) == true
+                    game = Game.find_by(date: input)
+                    puts "Date: #{game[:date]}"
+                    puts "Score: #{Team.find_by(team_id: game.home_team_id).name}: #{game.home_team_score} - #{Team.find_by(team_id: game.visitor_team_id).name}: #{game.visitor_team_score} "
+                else
+                    puts "\nPlease enter a valid date"
+                end 
             when "Exit"
                 break
             end 

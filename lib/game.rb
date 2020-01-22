@@ -4,7 +4,7 @@ class Game < ActiveRecord::Base
 
     def teams
         Team.all.select do |team|
-            self.home_team_id == team.id || self.visitor_team_id == team.id
+            self.home_team_id == team.team_id || self.visitor_team_id == team.team_id
         end 
     end 
 
@@ -14,7 +14,7 @@ class Game < ActiveRecord::Base
      players_arr = [] 
         teams.each do |team|
            Player.all.each do |player|
-                if player.team_id == team.id 
+                if player.team_id == team.team_id 
                     players_arr.push(player) 
                 end 
            end  
