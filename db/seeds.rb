@@ -1,6 +1,7 @@
 require 'unirest'
 require "pry"
 
+
 # Teams API
 
 teams_api = Unirest.get "https://free-nba.p.rapidapi.com/teams",
@@ -64,7 +65,7 @@ def player_popluator(players)
   players.each do |player|
       Player.create(:first_name => player["first_name"],
       :height_feet => player["height_feet"], :height_inches => player["height_inches"], :last_name => player["last_name"], :position => player["position"],
-      :team_id => player["team"]["id"], :weight_pounds => player["weight_pounds"]) 
+      :team_id => player["team"]["id"], :weight_pounds => player["weight_pounds"], :PPG => rand(5..65).to_f) 
   end  
 end
 

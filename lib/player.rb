@@ -7,4 +7,7 @@ class Player < ActiveRecord::Base
             game.home_team_id == self.team_id || game.visitor_team_id == self.team_id
         end 
     end 
+
+    
+
 end 
