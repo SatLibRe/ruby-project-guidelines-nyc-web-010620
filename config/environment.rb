@@ -8,3 +8,4 @@ require_relative "../lib/game.rb"
 require_relative "../lib/player.rb"
 require_relative "../lib/team.rb"
 require_relative "../lib/command_line_interface.rb"
+ActiveRecord::Base.logger = nil

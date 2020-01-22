@@ -25,8 +25,8 @@ class CommandLineInterface
     end
 
     def run
-    while "code" do 
-        input = ttyprompt("Please choose an option",["Search for a Team by name", "Search for a Player", "List all players","Exit"])
+    while true do 
+        input = ttyprompt("Please choose an option",["Search for a Team by city", "Search for a Player", "List all players","Exit"])
         case input
             when "Search for a Player"
                 puts "Please enter a player's first name"
@@ -41,7 +41,12 @@ class CommandLineInterface
             when "List all players"
                 Player.all.each do |player|
                     puts "#{player.first_name} #{player.last_name}"
-            end 
+                end 
+            when "Search for a Team by city"
+                puts "Please enter a Team city"
+                input = gets.strip.to_s
+                team = Team.find_by(city: input.downcase.capitalize)
+                puts "Abbreviation: #{team.abbreviation}" 
             when "Exit"
                 break
             end 
