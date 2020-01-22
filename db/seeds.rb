@@ -6,6 +6,8 @@ Team.destroy_all
 Game.destroy_all
 
 
+
+
 # Teams API
 
 teams_api = Unirest.get "https://free-nba.p.rapidapi.com/teams",
