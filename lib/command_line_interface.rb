@@ -24,26 +24,39 @@ class CommandLineInterface
         prompt.select(text,arr)
     end
 
+    def valid_response_player?(input) 
+        Player.all.each do |player|
+            if player.first_name.downcase == input.downcase 
+                return true  
+            end 
+        end 
+        false 
+    end 
+
     def run
     while true do 
-        input = ttyprompt("Please choose an option",["Search for a Team by city", "Search for a Player", "List all players","Exit"])
+        input = ttyprompt("\nPlease choose an option",["Search for a Team by city", "Search for a Player", "List all players","Exit"])
         case input
             when "Search for a Player"
-                puts "Please enter a player's first name"
+                puts "\nPlease enter a player's first name"
                 input = gets.strip.to_s
-                player = Player.find_by(first_name: input.downcase.capitalize)
-                puts "First Name: #{player[:first_name]}"
-                puts "Last Name: #{player[:last_name]}"
-                puts "Position: #{player[:position]}"
-                puts "PPG: #{player[:PPG]}"  
-                puts "Height: #{player[:height_feet]}'#{player[:height_inches]}" 
-                puts "Weight: #{player[:weight_pounds]}"
+                if valid_response_player?(input) == true
+                    player = Player.find_by(first_name: input.downcase.capitalize)
+                    puts "First Name: #{player[:first_name]}"
+                    puts "Last Name: #{player[:last_name]}"
+                    puts "Position: #{player[:position]}"
+                    puts "PPG: #{player[:PPG]}"  
+                    puts "Height: #{player[:height_feet]}'#{player[:height_inches]}" 
+                    puts "Weight: #{player[:weight_pounds]}"
+                else 
+                    puts "\nPlease enter a valid name"
+                end 
             when "List all players"
                 Player.all.each do |player|
                     puts "#{player.first_name} #{player.last_name}"
                 end 
             when "Search for a Team by city"
-                puts "Please enter a Team city"
+                puts "\nPlease enter a Team city"
                 input = gets.strip.to_s
                 team = Team.find_by(city: input.downcase.capitalize)
                 puts "Abbreviation: #{team.abbreviation}" 
