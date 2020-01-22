@@ -34,6 +34,15 @@ class CommandLineInterface
         false 
     end 
 
+    def valid_response_city?(input)
+        Team.all.each do |team|
+            if team.city.downcase == input.downcase
+                return true
+            end 
+        end 
+        false 
+    end
+
     def run
     while true do 
         input = ttyprompt("\nPlease choose an option",["Search for a Team by city", "Search for a Player", "List all players","Exit"])
@@ -59,9 +68,16 @@ class CommandLineInterface
             when "Search for a Team by city"
                 puts "\nPlease enter a Team city"
                 input = gets.strip.to_s
-                team = Team.find_by(city: input.downcase.capitalize)
-                puts "Abbreviation: #{team.abbreviation}"
-                
+                if valid_response_city?(input) == true
+                    team = Team.find_by(city: input.downcase.capitalize)
+                    puts "\nAbbreviation: #{team[:abbreviation]}"
+                    puts "Conference: #{team[:conference]}"
+                    puts "Division: #{team[:division]}" 
+                    puts "Full Name: #{team[:full_name]}"
+                    puts "Team Name: #{team[:name]}"
+                else
+                    puts "\nPlease enter a valid city"
+                end
             when "Exit"
                 break
             end 
