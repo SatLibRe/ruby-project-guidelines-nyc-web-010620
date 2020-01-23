@@ -122,7 +122,7 @@ $prompt = TTY::Prompt.new
                             when "Edit Player"
                                 edit_player(input)
                             when "See Games Played"
-                                games_played(input)
+                                games_played(input).length != 0 ? games_played(input) : "No games played!"
                          end 
                 else 
                     puts "\nPlease enter a valid name"
@@ -168,25 +168,25 @@ $prompt = TTY::Prompt.new
                 myteam = $prompt.ask("What team do you want to be on?")
                 myteamid = Team.find_by(name: myteam).team_id
                 fat = $prompt.ask("Whats is your weight?")
-                pavg = $prompt.ask("What you averaging?")
-                Player.create(:first_name => fname.downcase.capitalize, :height_feet => hfeet, :height_inches => hinches, :last_name => lname.downcase.capitalize, :position => pos, :team_id => myteamid, :weight_pounds => fat, :PPG => pavg) 
+                pavg = $prompt.ask("How many points are you averaging?")
+                Player.create(:first_name => fname.strip.downcase.capitalize, :height_feet => hfeet, :height_inches => hinches, :last_name => lname.strip.downcase.capitalize, :position => pos.strip, :team_id => myteamid, :weight_pounds => fat, :PPG => pavg) 
                 puts "\nPlayer Created!"
             when "Delete Player"
                 to_delete = $prompt.ask("What is the last name of the player you would like to delete?")
-                Player.find_by(last_name: to_delete).delete
+                Player.find_by(last_name: to_delete.strip.downcase.capitalize).delete
                 puts "\nPlayer Deleted!"
             when "Edit Player"
                 player_to_update = $prompt.ask("\nWhat is the last name of the player you would like to edit?")
-                player_to_update = Player.find_by(last_name: player_to_update.downcase.capitalize)
+                player_to_update = Player.find_by(last_name: player_to_update.strip.downcase.capitalize)
                 what_to_be_updated = $prompt.select("\nWhat would you like to edit about them:",["First Name", "Last Name", "Height in Feet","Height in Inches", "Position","Team","Weight","PPG","Exit"])
                 case what_to_be_updated
                     when "First Name"
                         changer = $prompt.ask("\nWhat would you like to change it to?") 
-                        player_to_update.update(first_name: changer.downcase.capitalize)
+                        player_to_update.update(first_name: changer.strip.downcase.capitalize)
                         puts "\nPlayer updated!"
                     when "Last Name"
                         changer = $prompt.ask("\nWhat would you like to change it to?") 
-                        player_to_update.update(last_name: changer.downcase.capitalize)
+                        player_to_update.update(last_name: changer.strip.downcase.capitalize)
                         puts "\nPlayer updated!"
                     when "Height in Feet"
                         changer = $prompt.ask("\nWhat would you like to change it to?") 
