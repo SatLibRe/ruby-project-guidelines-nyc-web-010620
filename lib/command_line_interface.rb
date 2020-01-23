@@ -76,7 +76,7 @@ $prompt = TTY::Prompt.new
                 puts "\nPlayer updated!"
             when "Team"
                 teamer = $prompt.ask("\nWhat Team name would you like to change it to?") 
-                changer = Team.find_by(name: teamer).team_id
+                changer = Team.find_by(name: teamer.downcase.capitalize).team_id
                 player_to_update.update(team_id: changer)
                 puts "\nPlayer updated!"
             when "Weight"
@@ -105,14 +105,16 @@ $prompt = TTY::Prompt.new
     end 
 
     def player_printer(input)
-        Team.find_by(city: input).players.map do |player|
-            puts "\nFirst Name: #{player[:first_name]}"
-            puts "Last Name: #{player[:last_name]}"
-            puts "Position: #{player[:position]}"
-            puts "PPG: #{player[:PPG]}"  
-            puts "Height: #{player[:height_feet]}'#{player[:height_inches]}" 
-            puts "Weight: #{player[:weight_pounds]}"
-        end 
+     player_arr = []
+        Team.find_by(city: input).players.each do |player|
+            player_arr.push("\nFirst Name: #{player[:first_name]}")
+            player_arr.push("Last Name: #{player[:last_name]}")
+            player_arr.push("Position: #{player[:position]}")
+            player_arr.push("PPG: #{player[:PPG]}")  
+            player_arr.push("Height: #{player[:height_feet]}'#{player[:height_inches]}") 
+            player_arr.push("Weight: #{player[:weight_pounds]}")
+        end
+        player_arr 
     end 
 
    
@@ -153,8 +155,8 @@ $prompt = TTY::Prompt.new
                     puts "#{player.first_name} #{player.last_name} - #{Team.find_by(team_id: player[:team_id]).name}"
                 end 
             when "Search for a Team by city"
-                puts "\nPlease enter a Team city"
-                input = gets.strip.to_s
+                input = $prompt.ask("\nPlease enter a Team city")
+                input = input.split.map(&:capitalize).join(' ')
                 if valid_response_city?(input) == true
                     team = Team.find_by(city: input)
                     puts "\nAbbreviation: #{team[:abbreviation]}"
@@ -165,7 +167,7 @@ $prompt = TTY::Prompt.new
                     second_input = $prompt.select("\nPlease choose an option:",["See Players","See Games Played","Exit"])
                         case second_input
                         when "See Players"
-                            player_printer(input)
+                            player_printer(input).length !=0 ? (puts player_printer(input)) : (puts "\nThey have no players!")
                         when "See Games Played"
                             team_games_played(input).length != 0 ? (puts team_games_played(input)) : (puts "\nNo games played!")
                         end
@@ -230,7 +232,7 @@ $prompt = TTY::Prompt.new
                         puts "\nPlayer updated!"
                     when "Team"
                         teamer = $prompt.ask("\nWhat Team name would you like to change it to?") 
-                        changer = Team.find_by(name: teamer).team_id
+                        changer = Team.find_by(name: teamer.downcase.capitalize).team_id
                         player_to_update.update(team_id: changer)
                         puts "\nPlayer updated!"
                     when "Weight"
