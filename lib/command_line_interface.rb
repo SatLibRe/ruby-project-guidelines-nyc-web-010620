@@ -97,6 +97,17 @@ $prompt = TTY::Prompt.new
             end
     end 
 
+    def player_printer(input)
+        Team.find_by(city: input).players.each do |player|
+            puts "\nFirst Name: #{player[:first_name]}"
+            puts "Last Name: #{player[:last_name]}"
+            puts "Position: #{player[:position]}"
+            puts "PPG: #{player[:PPG]}"  
+            puts "Height: #{player[:height_feet]}'#{player[:height_inches]}" 
+            puts "Weight: #{player[:weight_pounds]}"
+        end 
+    end 
+
   
 
     def run
@@ -122,7 +133,7 @@ $prompt = TTY::Prompt.new
                             when "Edit Player"
                                 edit_player(input)
                             when "See Games Played"
-                                games_played(input).length != 0 ? games_played(input) : "No games played!"
+                                games_played(input).length != 0 ? games_played(input) : (puts "\nNo games played!")
                          end 
                 else 
                     puts "\nPlease enter a valid name"
@@ -141,6 +152,11 @@ $prompt = TTY::Prompt.new
                     puts "Division: #{team[:division]}" 
                     puts "Full Name: #{team[:full_name]}"
                     puts "Team Name: #{team[:name]}"
+                    second_input = $prompt.select("\nPlease choose an option:",["See Players","Exit"])
+                        case second_input
+                        when "See Players"
+                            player_printer(input).length == 0 ? (puts "\nThey have no players!") : player_printer(input)
+                        end
                 else 
                     puts "\nPlease enter a valid city"
                 end 
