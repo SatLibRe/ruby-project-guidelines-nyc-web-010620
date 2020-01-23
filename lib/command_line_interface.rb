@@ -113,7 +113,7 @@ $prompt = TTY::Prompt.new
                 myteamid = Team.find_by(name: myteam).team_id
                 fat = $prompt.ask("Whats is your weight?")
                 pavg = $prompt.ask("What you averaging?")
-                Player.create(:first_name => fname, :height_feet => hfeet, :height_inches => hinches, :last_name => lname, :position => pos, :team_id => myteamid, :weight_pounds => fat, :PPG => pavg) 
+                Player.create(:first_name => fname.downcase.capitalize, :height_feet => hfeet, :height_inches => hinches, :last_name => lname.downcase.capitalize, :position => pos, :team_id => myteamid, :weight_pounds => fat, :PPG => pavg) 
                 puts "\nPlayer Created!"
             when "Delete Player"
                 to_delete = $prompt.ask("What is the last name of the player you would like to delete?")
@@ -126,11 +126,11 @@ $prompt = TTY::Prompt.new
                 case what_to_be_updated
                     when "First Name"
                         changer = $prompt.ask("\nWhat would you like to change it to?") 
-                        player_to_update.update(first_name: changer)
+                        player_to_update.update(first_name: changer.downcase.capitalize)
                         puts "\nPlayer updated!"
                     when "Last Name"
                         changer = $prompt.ask("\nWhat would you like to change it to?") 
-                        player_to_update.update(last_name: changer)
+                        player_to_update.update(last_name: changer.downcase.capitalize)
                         puts "\nPlayer updated!"
                     when "Height in Feet"
                         changer = $prompt.ask("\nWhat would you like to change it to?") 
