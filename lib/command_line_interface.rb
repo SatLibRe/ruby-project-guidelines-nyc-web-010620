@@ -54,7 +54,7 @@ $prompt = TTY::Prompt.new
 
     def run
     while true do 
-        input = $prompt.select("\nPlease choose an option",["Search for a Team by city", "Search for a Player", "List all players","Search for a Game by Date", "List Top 10 Players","Create Player","Exit"])
+        input = $prompt.select("\nPlease choose an option:",["Search for a Team by city", "Search for a Player", "List all players","Search for a Game by Date", "List Top 10 Scorers","Create Player","Delete Player","Exit"])
         case input
             when "Search for a Player"
                 puts "\nPlease enter a player's first name"
@@ -73,7 +73,7 @@ $prompt = TTY::Prompt.new
                 end 
             when "List all players"
                 Player.all.each do |player|
-                    puts "#{player.first_name} #{player.last_name}"
+                    puts "#{player.first_name} #{player.last_name} - #{Team.find_by(team_id: player[:team_id]).name}"
                 end 
             when "Search for a Team by city"
                 puts "\nPlease enter a Team city"
@@ -98,7 +98,7 @@ $prompt = TTY::Prompt.new
                 else
                     puts "\nPlease enter a valid date"
                 end 
-            when "List Top 10 Players"
+            when "List Top 10 Scorers"
                 player_arr = Player.order(PPG: :desc).to_a.slice(0,10)
                 player_arr.each do |player|
                     puts "#{player.first_name} #{player.last_name}: #{player.PPG}"
@@ -114,6 +114,9 @@ $prompt = TTY::Prompt.new
                 fat = $prompt.ask("Whats is your weight?")
                 pavg = $prompt.ask("What you averaging?")
                 Player.create(:first_name => fname, :height_feet => hfeet, :height_inches => hinches, :last_name => lname, :position => pos, :team_id => myteamid, :weight_pounds => fat, :PPG => pavg) 
+            when "Delete Player"
+                to_delete = $prompt.ask("What is the last name of the player you would like to delete?")
+                Player.find_by(last_name: to_delete).delete
             when "Exit"
                 break
             end 
