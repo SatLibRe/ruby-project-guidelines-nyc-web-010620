@@ -97,6 +97,13 @@ $prompt = TTY::Prompt.new
             end
     end 
 
+    def team_games_played(input)
+        team_games = Team.find_by(city: input).games
+            team_games.map do |game|
+                "#{Team.find_by(team_id: game.home_team_id).name}: #{game.home_team_score} - #{Team.find_by(team_id: game.visitor_team_id).name}: #{game.visitor_team_score}"
+            end
+    end 
+
     def player_printer(input)
         Team.find_by(city: input).players.map do |player|
             puts "\nFirst Name: #{player[:first_name]}"
@@ -128,14 +135,14 @@ $prompt = TTY::Prompt.new
                     puts "PPG: #{player[:PPG]}"  
                     puts "Height: #{player[:height_feet]}'#{player[:height_inches]}" 
                     puts "Weight: #{player[:weight_pounds]}"
-                    second_input = $prompt.select("\nPlease choose an option:",["Delete Player","Edit Player","See Games Played","Exit"])
+                    second_input = $prompt.select("\nPlease choose an option:",["Delete Player","Edit Player","See Team's Games Played","Exit"])
                         case second_input
                             when "Delete Player"
                                 Player.find_by(last_name: input.downcase.capitalize).delete
                                 puts "\nPlayer Deleted!"
                             when "Edit Player"
                                 edit_player(input)
-                            when "See Games Played"    
+                            when "See Team's Games Played"    
                                  games_played(input).length != 0 ? (puts games_played(input)) : (puts "\nNo games played!")
                          end 
                 else 
@@ -155,10 +162,12 @@ $prompt = TTY::Prompt.new
                     puts "Division: #{team[:division]}" 
                     puts "Full Name: #{team[:full_name]}"
                     puts "Team Name: #{team[:name]}"
-                    second_input = $prompt.select("\nPlease choose an option:",["See Players","Exit"])
+                    second_input = $prompt.select("\nPlease choose an option:",["See Players","See Games Played","Exit"])
                         case second_input
                         when "See Players"
                             player_printer(input)
+                        when "See Games Played"
+                            team_games_played(input).length != 0 ? (puts team_games_played(input)) : (puts "\nNo games played!")
                         end
                 else 
                     puts "\nPlease enter a valid city"
@@ -185,7 +194,7 @@ $prompt = TTY::Prompt.new
                 hinches = $prompt.ask("... and in inches?")
                 pos = $prompt.ask("What is your position?")
                 myteam = $prompt.ask("What team do you want to be on?")
-                myteamid = Team.find_by(name: myteam).team_id
+                myteamid = Team.find_by(name: myteam.downcase.capitalize).team_id
                 fat = $prompt.ask("Whats is your weight?")
                 pavg = $prompt.ask("How many points are you averaging?")
                 Player.create(:first_name => fname.strip.downcase.capitalize, :height_feet => hfeet, :height_inches => hinches, :last_name => lname.strip.downcase.capitalize, :position => pos.strip, :team_id => myteamid, :weight_pounds => fat, :PPG => pavg) 
