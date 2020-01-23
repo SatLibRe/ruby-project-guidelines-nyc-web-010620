@@ -50,6 +50,48 @@ $prompt = TTY::Prompt.new
         false 
     end
 
+    def edit_player(input)
+        player_to_update = Player.find_by(last_name: input.downcase.capitalize)
+        what_to_be_updated = $prompt.select("\nWhat would you like to edit about them:",["First Name", "Last Name", "Height in Feet","Height in Inches", "Position","Team","Weight","PPG","Exit"])
+        case what_to_be_updated
+            when "First Name"
+                changer = $prompt.ask("\nWhat would you like to change it to?") 
+                player_to_update.update(first_name: changer.downcase.capitalize)
+                puts "\nPlayer updated!"
+            when "Last Name"
+                changer = $prompt.ask("\nWhat would you like to change it to?") 
+                player_to_update.update(last_name: changer.downcase.capitalize)
+                puts "\nPlayer updated!"
+            when "Height in Feet"
+                changer = $prompt.ask("\nWhat would you like to change it to?") 
+                player_to_update.update(height_feet: changer)
+                puts "\nPlayer updated!"
+            when "Height in Inches"
+                changer = $prompt.ask("\nWhat would you like to change it to?") 
+                player_to_update.update(height_inches: changer)
+                puts "\nPlayer updated!"
+            when "Position"
+                changer = $prompt.ask("\nWhat would you like to change it to?") 
+                player_to_update.update(position: changer)
+                puts "\nPlayer updated!"
+            when "Team"
+                teamer = $prompt.ask("\nWhat Team name would you like to change it to?") 
+                changer = Team.find_by(name: teamer).team_id
+                player_to_update.update(team_id: changer)
+                puts "\nPlayer updated!"
+            when "Weight"
+                changer = $prompt.ask("\nWhat would you like to change it to?") 
+                player_to_update.update(weight: changer)
+                puts "\nPlayer updated!"
+            when "PPG"
+                changer = $prompt.ask("\nWhat would you like to change it to?") 
+                player_to_update.update(PPG: changer)
+                puts "\nPlayer updated!"
+            end 
+    end 
+
+   
+
   
 
     def run
@@ -57,8 +99,7 @@ $prompt = TTY::Prompt.new
         input = $prompt.select("\nPlease choose an option:",["Search for a Team by city", "Search for a Player", "List all players","Search for a Game by Date", "List Top 10 Scorers","Create Player","Delete Player","Edit Player","Exit"])
         case input
             when "Search for a Player"
-                puts "\nPlease enter a player's last name"
-                input = gets.strip.to_s
+                input = $prompt.ask("\nPlease enter a player's last name:")
                 if valid_response_player?(input) == true
                     player = Player.find_by(last_name: input.downcase.capitalize)
                     puts "\nFirst Name: #{player[:first_name]}"
@@ -68,6 +109,14 @@ $prompt = TTY::Prompt.new
                     puts "PPG: #{player[:PPG]}"  
                     puts "Height: #{player[:height_feet]}'#{player[:height_inches]}" 
                     puts "Weight: #{player[:weight_pounds]}"
+                    second_input = $prompt.select("\nPlease choose an option:",["Delete Player","Edit Player","Exit"])
+                        case second_input
+                            when "Delete Player"
+                                Player.find_by(last_name: input.downcase.capitalize).delete
+                                puts "\nPlayer Deleted!"
+                            when "Edit Player"
+                                edit_player(input)
+                        end 
                 else 
                     puts "\nPlease enter a valid name"
                 end 
