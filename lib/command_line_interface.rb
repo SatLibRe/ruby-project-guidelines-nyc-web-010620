@@ -25,7 +25,7 @@ $prompt = TTY::Prompt.new
 
     def valid_response_player?(input) 
         Player.all.each do |player|
-            if player.first_name.downcase == input.downcase 
+            if player.last_name.downcase == input.downcase 
                 return true  
             end 
         end 
@@ -54,13 +54,13 @@ $prompt = TTY::Prompt.new
 
     def run
     while true do 
-        input = $prompt.select("\nPlease choose an option:",["Search for a Team by city", "Search for a Player", "List all players","Search for a Game by Date", "List Top 10 Scorers","Create Player","Delete Player","Exit"])
+        input = $prompt.select("\nPlease choose an option:",["Search for a Team by city", "Search for a Player", "List all players","Search for a Game by Date", "List Top 10 Scorers","Create Player","Delete Player","Edit Player","Exit"])
         case input
             when "Search for a Player"
-                puts "\nPlease enter a player's first name"
+                puts "\nPlease enter a player's last name"
                 input = gets.strip.to_s
                 if valid_response_player?(input) == true
-                    player = Player.find_by(first_name: input.downcase.capitalize)
+                    player = Player.find_by(last_name: input.downcase.capitalize)
                     puts "\nFirst Name: #{player[:first_name]}"
                     puts "Last Name: #{player[:last_name]}"
                     puts "Position: #{player[:position]}"
@@ -114,58 +114,55 @@ $prompt = TTY::Prompt.new
                 fat = $prompt.ask("Whats is your weight?")
                 pavg = $prompt.ask("What you averaging?")
                 Player.create(:first_name => fname, :height_feet => hfeet, :height_inches => hinches, :last_name => lname, :position => pos, :team_id => myteamid, :weight_pounds => fat, :PPG => pavg) 
+                puts "\nPlayer Created!"
             when "Delete Player"
                 to_delete = $prompt.ask("What is the last name of the player you would like to delete?")
                 Player.find_by(last_name: to_delete).delete
+                puts "\nPlayer Deleted!"
+            when "Edit Player"
+                player_to_update = $prompt.ask("\nWhat is the last name of the player you would like to edit?")
+                player_to_update = Player.find_by(last_name: player_to_update.downcase.capitalize)
+                what_to_be_updated = $prompt.select("\nWhat would you like to edit about them:",["First Name", "Last Name", "Height in Feet","Height in Inches", "Position","Team","Weight","PPG","Exit"])
+                case what_to_be_updated
+                    when "First Name"
+                        changer = $prompt.ask("\nWhat would you like to change it to?") 
+                        player_to_update.update(first_name: changer)
+                        puts "\nPlayer updated!"
+                    when "Last Name"
+                        changer = $prompt.ask("\nWhat would you like to change it to?") 
+                        player_to_update.update(last_name: changer)
+                        puts "\nPlayer updated!"
+                    when "Height in Feet"
+                        changer = $prompt.ask("\nWhat would you like to change it to?") 
+                        player_to_update.update(height_feet: changer)
+                        puts "\nPlayer updated!"
+                    when "Height in Inches"
+                        changer = $prompt.ask("\nWhat would you like to change it to?") 
+                        player_to_update.update(height_inches: changer)
+                        puts "\nPlayer updated!"
+                    when "Position"
+                        changer = $prompt.ask("\nWhat would you like to change it to?") 
+                        player_to_update.update(position: changer)
+                        puts "\nPlayer updated!"
+                    when "Team"
+                        teamer = $prompt.ask("\nWhat Team name would you like to change it to?") 
+                        changer = Team.find_by(name: teamer).team_id
+                        player_to_update.update(team_id: changer)
+                        puts "\nPlayer updated!"
+                    when "Weight"
+                        changer = $prompt.ask("\nWhat would you like to change it to?") 
+                        player_to_update.update(weight: changer)
+                        puts "\nPlayer updated!"
+                    when "PPG"
+                        changer = $prompt.ask("\nWhat would you like to change it to?") 
+                        player_to_update.update(PPG: changer)
+                        puts "\nPlayer updated!"
+                    end 
             when "Exit"
                 break
             end 
         end 
     end  
 
-    # def run
-    #     input = ttyprompt("Please choose an option",["Search for a Team by name", "Search for a Player", "List all players"])
-    #     if input == "Search for a Player"
-    #         puts "Please enter a player's first name"
-    #         input = gets.strip.to_s
-    #         player = Player.find_by(first_name: input.downcase.capitalize)
-    #         puts "First Name: #{player[:first_name]}"
-    #         puts "Last Name: #{player[:last_name]}"
-    #         puts "Position: #{player[:position]}"
-    #         puts "PPG: #{player[:PPG]}"  
-    #         puts "Height: #{player[:height_feet]}'#{player[:height_inches]}" 
-    #         puts "Weight: #{player[:weight_pounds]}"
-    #     elsif input == "List all players"
-    #         Player.all.each do |player|
-    #             puts "#{player.first_name} #{player.last_name}"
-    #         end 
-    #     end 
-    # end 
-
-
-    # def run
-    #     input = ""
-    #     while input 
-    #       puts "Please enter a command:"
-    #       input = gets.strip.to_s
-    #         case input 
-    #         when "1"
-    #             # play(songs)
-    #           when "2"
-    #             puts "Please enter a player's first name"
-    #             input = gets.strip.to_s
-    #             player = Player.find_by(first_name: input.downcase.capitalize)
-    #             puts "First Name: #{player[:first_name]}"
-    #             puts "Last Name: #{player[:last_name]}"
-    #             puts "Position: #{player[:position]}"
-    #             puts "PPG: #{player[:PPG]}"  
-    #             puts "Height: #{player[:height_feet]}'#{player[:height_inches]}" 
-    #             puts "Weight: #{player[:weight_pounds]}"
-    #           when "3"
-    #             # exit_jukebox 
-    #             break
-    #         end 
-    #     end
-    #   end 
 
 end 
