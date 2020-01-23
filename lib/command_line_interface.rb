@@ -90,7 +90,12 @@ $prompt = TTY::Prompt.new
             end 
     end 
 
-   
+    def games_played(input)
+        player_games = Player.find_by(last_name: input.downcase.capitalize).games
+            player_games.each do |game|
+                puts "#{Team.find_by(team_id: game.home_team_id).name}: #{game.home_team_score} - #{Team.find_by(team_id: game.visitor_team_id).name}: #{game.visitor_team_score}"
+            end
+    end 
 
   
 
@@ -109,14 +114,16 @@ $prompt = TTY::Prompt.new
                     puts "PPG: #{player[:PPG]}"  
                     puts "Height: #{player[:height_feet]}'#{player[:height_inches]}" 
                     puts "Weight: #{player[:weight_pounds]}"
-                    second_input = $prompt.select("\nPlease choose an option:",["Delete Player","Edit Player","Exit"])
+                    second_input = $prompt.select("\nPlease choose an option:",["Delete Player","Edit Player","See Games Played","Exit"])
                         case second_input
                             when "Delete Player"
                                 Player.find_by(last_name: input.downcase.capitalize).delete
                                 puts "\nPlayer Deleted!"
                             when "Edit Player"
                                 edit_player(input)
-                        end 
+                            when "See Games Played"
+                                games_played(input)
+                         end 
                 else 
                     puts "\nPlease enter a valid name"
                 end 
