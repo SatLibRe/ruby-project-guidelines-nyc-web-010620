@@ -92,13 +92,13 @@ $prompt = TTY::Prompt.new
 
     def games_played(input)
         player_games = Player.find_by(last_name: input.downcase.capitalize).games
-            player_games.each do |game|
-                puts "#{Team.find_by(team_id: game.home_team_id).name}: #{game.home_team_score} - #{Team.find_by(team_id: game.visitor_team_id).name}: #{game.visitor_team_score}"
+            player_games.map do |game|
+                 "#{Team.find_by(team_id: game.home_team_id).name}: #{game.home_team_score} - #{Team.find_by(team_id: game.visitor_team_id).name}: #{game.visitor_team_score}"
             end
     end 
 
     def player_printer(input)
-        Team.find_by(city: input).players.each do |player|
+        Team.find_by(city: input).players.map do |player|
             puts "\nFirst Name: #{player[:first_name]}"
             puts "Last Name: #{player[:last_name]}"
             puts "Position: #{player[:position]}"
@@ -107,6 +107,9 @@ $prompt = TTY::Prompt.new
             puts "Weight: #{player[:weight_pounds]}"
         end 
     end 
+
+   
+
 
   
 
@@ -132,8 +135,8 @@ $prompt = TTY::Prompt.new
                                 puts "\nPlayer Deleted!"
                             when "Edit Player"
                                 edit_player(input)
-                            when "See Games Played"
-                                games_played(input).length != 0 ? games_played(input) : (puts "\nNo games played!")
+                            when "See Games Played"    
+                                 games_played(input).length != 0 ? (puts games_played(input)) : (puts "\nNo games played!")
                          end 
                 else 
                     puts "\nPlease enter a valid name"
@@ -155,7 +158,7 @@ $prompt = TTY::Prompt.new
                     second_input = $prompt.select("\nPlease choose an option:",["See Players","Exit"])
                         case second_input
                         when "See Players"
-                            player_printer(input).length == 0 ? (puts "\nThey have no players!") : player_printer(input)
+                            player_printer(input)
                         end
                 else 
                     puts "\nPlease enter a valid city"
