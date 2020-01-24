@@ -203,48 +203,56 @@ $prompt = TTY::Prompt.new
                 Player.create(:first_name => fname.strip.downcase.capitalize, :height_feet => hfeet, :height_inches => hinches, :last_name => lname.strip.downcase.capitalize, :position => pos.strip, :team_id => myteamid, :weight_pounds => fat, :PPG => pavg) 
                 puts "\nPlayer Created!"
             when "Delete Player"
-                to_delete = $prompt.ask("What is the last name of the player you would like to delete?")
-                Player.find_by(last_name: to_delete.strip.downcase.capitalize).delete
-                puts "\nPlayer Deleted!"
+                to_delete = $prompt.ask("What is the last name of the player you would like to delete?")                
+                if valid_response_player?(to_delete) == true
+                    Player.find_by(last_name: to_delete.strip.downcase.capitalize).delete
+                    puts "\nPlayer Deleted!"
+                else 
+                    puts "\nPlease enter a valid name"
+                end        
             when "Edit Player"
                 player_to_update = $prompt.ask("\nWhat is the last name of the player you would like to edit?")
-                player_to_update = Player.find_by(last_name: player_to_update.strip.downcase.capitalize)
-                what_to_be_updated = $prompt.select("\nWhat would you like to edit about them:",["First Name", "Last Name", "Height in Feet","Height in Inches", "Position","Team","Weight","PPG","Exit"])
-                case what_to_be_updated
-                    when "First Name"
-                        changer = $prompt.ask("\nWhat would you like to change it to?") 
-                        player_to_update.update(first_name: changer.strip.downcase.capitalize)
-                        puts "\nPlayer updated!"
-                    when "Last Name"
-                        changer = $prompt.ask("\nWhat would you like to change it to?") 
-                        player_to_update.update(last_name: changer.strip.downcase.capitalize)
-                        puts "\nPlayer updated!"
-                    when "Height in Feet"
-                        changer = $prompt.ask("\nWhat would you like to change it to?") 
-                        player_to_update.update(height_feet: changer)
-                        puts "\nPlayer updated!"
-                    when "Height in Inches"
-                        changer = $prompt.ask("\nWhat would you like to change it to?") 
-                        player_to_update.update(height_inches: changer)
-                        puts "\nPlayer updated!"
-                    when "Position"
-                        changer = $prompt.ask("\nWhat would you like to change it to?") 
-                        player_to_update.update(position: changer)
-                        puts "\nPlayer updated!"
-                    when "Team"
-                        teamer = $prompt.ask("\nWhat Team name would you like to change it to?") 
-                        changer = Team.find_by(name: teamer.downcase.capitalize).team_id
-                        player_to_update.update(team_id: changer)
-                        puts "\nPlayer updated!"
-                    when "Weight"
-                        changer = $prompt.ask("\nWhat would you like to change it to?") 
-                        player_to_update.update(weight: changer)
-                        puts "\nPlayer updated!"
-                    when "PPG"
-                        changer = $prompt.ask("\nWhat would you like to change it to?") 
-                        player_to_update.update(PPG: changer)
-                        puts "\nPlayer updated!"
-                    end 
+                if valid_response_player?(player_to_update) == true
+                    player_to_update = Player.find_by(last_name: player_to_update.strip.downcase.capitalize)
+                    what_to_be_updated = $prompt.select("\nWhat would you like to edit about them:",["First Name", "Last Name", "Height in Feet","Height in Inches", "Position","Team","Weight","PPG","Exit"])
+                    case what_to_be_updated
+                        when "First Name"
+                            changer = $prompt.ask("\nWhat would you like to change it to?") 
+                            player_to_update.update(first_name: changer.strip.downcase.capitalize)
+                            puts "\nPlayer updated!"
+                        when "Last Name"
+                            changer = $prompt.ask("\nWhat would you like to change it to?") 
+                            player_to_update.update(last_name: changer.strip.downcase.capitalize)
+                            puts "\nPlayer updated!"
+                        when "Height in Feet"
+                            changer = $prompt.ask("\nWhat would you like to change it to?") 
+                            player_to_update.update(height_feet: changer)
+                            puts "\nPlayer updated!"
+                        when "Height in Inches"
+                            changer = $prompt.ask("\nWhat would you like to change it to?") 
+                            player_to_update.update(height_inches: changer)
+                            puts "\nPlayer updated!"
+                        when "Position"
+                            changer = $prompt.ask("\nWhat would you like to change it to?") 
+                            player_to_update.update(position: changer)
+                            puts "\nPlayer updated!"
+                        when "Team"
+                            teamer = $prompt.ask("\nWhat Team name would you like to change it to?") 
+                            changer = Team.find_by(name: teamer.downcase.capitalize).team_id
+                            player_to_update.update(team_id: changer)
+                            puts "\nPlayer updated!"
+                        when "Weight"
+                            changer = $prompt.ask("\nWhat would you like to change it to?") 
+                            player_to_update.update(weight: changer)
+                            puts "\nPlayer updated!"
+                        when "PPG"
+                            changer = $prompt.ask("\nWhat would you like to change it to?") 
+                            player_to_update.update(PPG: changer)
+                            puts "\nPlayer updated!"
+                        end 
+                    else 
+                    puts "\nPlease enter a valid name"
+                end 
             when "Exit"
                 break
             end 
